@@ -100,8 +100,8 @@ sidebar:
       subtitle: 三花聚顶本是幻，脚下腾云亦非真。
       jinrishici: false
       social:
-        - icon: fa-solid fa-rss
-          url: /atom.xml
+        # - icon: fa-solid fa-rss
+        #   url: /atom.xml
         - icon: fa-solid fa-envelope
           url: mailto:221900216@smail.nju.edu.cn
         - icon: fa-brands fa-github
