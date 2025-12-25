@@ -1,0 +1,214 @@
+# https://hexo.io/zh-cn/docs/configuration.html
+
+# ---------------------------------------------------------------------------- #
+#                                     Site                                     #
+# ---------------------------------------------------------------------------- #
+
+# 网站标题
+title: zkc-dev
+# 网站副标题
+subtitle: 生年不满百，常怀千岁忧。
+# 网站描述
+description: zkc-dev 的个人博客
+# 网站的关键词
+keywords:
+  - Blog
+  - 博客
+  - zkc-dev
+# 君の名は。
+author: zkc-dev
+# 网站使用的语言
+language: zh-CN
+# 网站时区
+timezone: Asia/Shanghai
+
+# ---------------------------------------------------------------------------- #
+#                                      URL                                     #
+# ---------------------------------------------------------------------------- #
+
+# 网址
+url: https://zkc-dev.github.io/zkc-dev.github.io/
+# 网站根目录
+root:
+# 文章的永久链接格式
+# https://hexo.io/zh-cn/docs/permalinks
+permalink: posts/:hash/
+# 永久链接中各部分的默认值
+permalink_defaults:
+# 改写 permalink 的值来美化 URL
+pretty_urls:
+  # 是否在永久链接中保留尾部的 index.html
+  trailing_index: false
+  # 是否在永久链接中保留尾部的 .html
+  trailing_html: false
+
+# ---------------------------------------------------------------------------- #
+#                                   Directory                                  #
+# ---------------------------------------------------------------------------- #
+
+# 资源文件夹
+source_dir: source
+# 公共文件夹
+public_dir: public
+# 标签文件夹
+tag_dir: tags
+# 归档文件夹
+archive_dir: archives
+# 分类文件夹
+category_dir: categories
+# Include code 文件夹
+code_dir: downloads/code
+# 国际化（i18n）文件夹
+i18n_dir: :lang
+# 跳过指定文件的渲染
+skip_render:
+
+# ---------------------------------------------------------------------------- #
+#                                    Writing                                   #
+# ---------------------------------------------------------------------------- #
+
+# 新文章的文件名称
+new_post_name: :year_:month_:day.md
+# 预设布局
+default_layout: post
+# 在中文和英文之间加入空格
+auto_spacing: false
+# 把标题转换为 title case
+titlecase: false
+# 在新标签中打开链接
+external_link:
+  # 在新标签中打开链接
+  enable: true
+  # 对整个网站（site）生效或仅对文章（post）生效
+  field: site
+  # 需要排除的域名
+  exclude:
+# 把文件名称转换为 (1) 小写或 (2) 大写
+filename_case: 0
+# 显示草稿
+render_drafts: false
+# 启动 Asset 文件夹
+# https://hexo.io/zh-cn/docs/asset-folders
+post_asset_folder: true
+marked:
+  prependRoot: true
+  postAsset: true
+# 把链接改为与根目录的相对位址
+relative_link: false
+# 显示未来的文章
+future: true
+# Highlight.js 代码块的设置
+# https://hexo.io/zh-cn/docs/syntax-highlight#Highlight-js
+highlight:
+  enable: true
+  # 自动检测代码块的语言
+  auto_detect: false
+  # 行号显示
+  line_number: true
+  # 接受一个可选的阈值，只有代码块的行数超过这个阈值才显示行数
+  line_threshold: 0
+  # 用代码内的 tab (\t) 替换为给定值
+  tab_replace: "  "
+  # 支持行号显示
+  wrap: true
+  # 给代码块的 class 添加 hljs- 前缀
+  hljs: false
+# PrismJS 代码块的设置
+# https://hexo.io/zh-cn/docs/syntax-highlight#PrismJS
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: true
+  line_threshold: 0
+  tab_replace: "  "
+
+# ---------------------------------------------------------------------------- #
+#                               Home page setting                              #
+# ---------------------------------------------------------------------------- #
+
+index_generator:
+  path: ""
+  per_page: 10
+  order_by: -date
+  pagination_dir: page
+
+# ---------------------------------------------------------------------------- #
+#                                Category & Tag                                #
+# ---------------------------------------------------------------------------- #
+
+# 默认分类
+default_category: note
+# 分类别名
+category_map:
+  笔记: note
+  日记: diary
+  教程: course
+  项目: project
+# 标签别名
+tag_map:
+  代码: code
+  娱乐: fun
+  JavaScript: javascript
+  API: api
+
+# ---------------------------------------------------------------------------- #
+#                              Date / Time format                              #
+# ---------------------------------------------------------------------------- #
+
+# 日期格式
+date_format: YYYY-MM-DD
+# 时间格式
+time_format: HH:mm:ss
+# 当 Front Matter 中没有指定 updated 时 updated 的取值
+updated_option: "mtime"
+
+# ---------------------------------------------------------------------------- #
+#                                  Pagination                                  #
+# ---------------------------------------------------------------------------- #
+
+# 每页显示的文章量 (0 = 关闭分页功能)
+per_page: 10
+# 分页目录
+pagination_dir: page
+
+# ---------------------------------------------------------------------------- #
+#                                  Extensions                                  #
+# ---------------------------------------------------------------------------- #
+
+# 当前主题名称
+theme: volantis
+# 主题的配置文件
+theme_config:
+# 部署部分的设置
+# https://hexo.io/docs/one-command-deployment
+# deploy:
+#   type: "git"
+#   repo: https://github.com/zkc-dev/zkc-dev.github.io/
+#   branch: github-pages
+# Meta generator 标签
+meta_generator: false
+
+# ---------------------------------------------------------------------------- #
+#                       Include/Exclude Files or Folders                       #
+# ---------------------------------------------------------------------------- #
+
+# include:
+# exclude:
+ignore:
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 0
+
+sitemap:
+  path: sitemap.xml
+  rel: false
+  tags: true
+  categories: true
+
+import:
+  head_begin:
+    - <meta name="google-site-verification" content="lfXOm0UB31IUvMF_99jdAPtrv761MQ7Do40C7Jepqi0" />
+    - <meta name="msvalidate.01" content="DBD73F6E5F9C945056DC99DC5F3A37C9" />
+    - <meta name="baidu-site-verification" content="codeva-UluXjonwds" />
