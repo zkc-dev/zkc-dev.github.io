@@ -143,18 +143,17 @@ article:
 #                                   Comments                                   #
 # ---------------------------------------------------------------------------- #
 
-# TODO：open resource the repo
-# comments:
-#   service: giscus
-#   giscus:
-#     repo: zkc-dev/zkc-dev.github.io
-#     repo-id: R_kgDOHPJkyA
-#     category: Announcements
-#     category-id: DIC_kwDOHPJkyM4Ca4sK
-#     mapping: "title"
-#     reactions-enabled: "1"
-#     emit-metadata: "0"
-#     lang: "zh-CN"
+comments:
+  service: giscus
+  giscus:
+    repo: zkc-dev/zkc-dev.github.io
+    repo-id: R_kgDOQuXdxQ
+    category: Announcements
+    category-id: DIC_kwDOQuXdxc4C0OZ5
+    mapping: "title"
+    reactions-enabled: "1"
+    emit-metadata: "0"
+    lang: "zh-CN"
 
 plugins:
   #   parallax:
