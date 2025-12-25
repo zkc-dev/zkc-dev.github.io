@@ -168,5 +168,5 @@ analytics:
   leancloud:
     app_id: Tqg1JEp5REnffNKbr8l8njtD-gzGzoHsz
     app_key: yhc5ePIKv2FH6JwK6wS44bDI
-    prod: true
+    custom_api_server: https://api.leancloud.cn # 国内版 Leancloud
     # custom_api_server:
