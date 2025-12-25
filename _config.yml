@@ -27,7 +27,7 @@ timezone: Asia/Shanghai
 # ---------------------------------------------------------------------------- #
 
 # 网址
-url: https://zkc-dev.github.io/zkc-dev.github.io/
+url: https://zkc-dev.github.io/
 # 网站根目录
 root:
 # 文章的永久链接格式
