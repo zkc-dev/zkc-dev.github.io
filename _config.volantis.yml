@@ -164,9 +164,8 @@ plugins:
   darkmode:
     enable: true
 
-# TODO：add leancloud app_id and app_key
 analytics:
   leancloud:
-    app_id: 
-    app_key: 
+    app_id: Tqg1JEp5REnffNKbr8l8njtD-gzGzoHsz
+    app_key: yhc5ePIKv2FH6JwK6wS44bDI
     # custom_api_server:
