@@ -1,0 +1,13 @@
+I implemented the `how_many_times` function in `/HumanEval_18/solution.py` to count overlapping occurrences of a substring in a string.
+
+**Changes made:**
+- **File modified:** `/HumanEval_18/solution.py`
+- **Implementation details:** 
+  - Added a check for empty substring (returns 0)
+  - Used a while loop to iterate through all possible starting positions in the string
+  - For each position, checked if the substring matches using string slicing
+  - Counted all matches including overlapping ones by incrementing the start position by 1 each iteration
+  - Returned the total count
+
+**Reasoning:**
+The key requirement was to count overlapping occurrences, which means we can'"'"'t skip ahead by the full substring length after finding a match. Instead, we need to check every possible starting position. The implementation handles all edge cases including empty strings, empty substrings, substrings longer than the string, and various overlapping scenarios. The solution passes all provided tests from both the docstring examples and the test suite.

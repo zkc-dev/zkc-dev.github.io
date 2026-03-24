@@ -1,0 +1,16 @@
+The task requires implementing a function that processes a string containing multiple groups of nested parentheses separated by spaces and returns a list of integers representing the maximum nesting depth for each group. 
+
+Understanding of the problem:
+- Input is a single string with space-separated groups of parentheses
+- Each group contains only '"'"'('"'"' and '"'"')'"'"' characters
+- Need to calculate the maximum nesting depth for each group
+- Nesting depth increases with each opening parenthesis '"'"'('"'"' and decreases with each closing parenthesis '"'"')'"'"'
+- The result should be a list of integers corresponding to each group'"'"'s maximum depth
+
+Possible causes of implementation issues:
+- Not properly splitting the input string into individual groups
+- Incorrectly tracking the current nesting depth while processing each character
+- Failing to capture the maximum depth reached for each group
+- Not handling edge cases like empty groups or single parentheses
+
+The solution must correctly parse each group, track the current depth as it processes each character, record the maximum depth encountered for each group, and return the results as a list of integers in the same order as the input groups.

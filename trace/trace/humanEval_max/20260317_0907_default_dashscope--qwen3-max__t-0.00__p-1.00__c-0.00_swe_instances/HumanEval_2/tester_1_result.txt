@@ -1,0 +1,1 @@
+[PASS] The truncate_number function implementation is correct and passes all tests. The function properly returns the decimal part of positive floating-point numbers by using number - int(number). All test cases including edge cases, precision handling, and the original requirements from the PR description pass successfully.

@@ -1,0 +1,14 @@
+I have successfully implemented the `count_distinct_characters` function in `/HumanEval_16/solution.py`. 
+
+The implementation:
+- Converts the input string to lowercase using `string.lower()` to handle case insensitivity
+- Creates a set of unique characters using `set()`
+- Returns the length of the set using `len()`
+
+This solution correctly handles all test cases:
+- Empty strings return 0
+- Case-insensitive character counting (e.g., '"'"'xyzXYZ'"'"' returns 3)
+- Mixed case strings (e.g., '"'"'Jerry'"'"' returns 4)
+- Strings with repeated characters in different cases (e.g., '"'"'aaaaAAAAaaaa'"'"' returns 1)
+
+The function is minimal, efficient, and handles all edge cases including special characters, numbers, and Unicode characters.

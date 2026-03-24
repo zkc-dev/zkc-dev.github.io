@@ -1,0 +1,6 @@
+instances_by_exit_status:
+    unknown_exit:
+    - HumanEval_0
+    - HumanEval_1
+    - HumanEval_2
+total_cost: 0.7625124000000002

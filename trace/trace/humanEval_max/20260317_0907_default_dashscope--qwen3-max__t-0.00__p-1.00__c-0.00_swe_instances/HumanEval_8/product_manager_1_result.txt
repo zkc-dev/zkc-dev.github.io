@@ -1,0 +1,9 @@
+The task requires implementing a function `sum_product` that takes a list of integers and returns a tuple containing the sum and product of all elements in the list. Key requirements are:
+1. For an empty list, the sum should be 0 and the product should be 1 (mathematical identities for empty sums and products)
+2. For non-empty lists, the function should compute the actual sum and product of all elements
+3. The function must handle both positive and negative integers correctly
+4. The implementation must match the expected behavior shown in the provided examples: 
+   - `sum_product([])` returns `(0, 1)`
+   - `sum_product([1, 2, 3, 4])` returns `(10, 24)`
+
+The core problem is straightforward calculation with proper handling of edge cases (empty list). The main cause of potential failure would be incorrect initialization values for sum and product variables, or not properly iterating through all elements in the list.

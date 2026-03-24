@@ -1,0 +1,23 @@
+instances_by_exit_status:
+    unknown_exit:
+    - HumanEval_0
+    - HumanEval_1
+    - HumanEval_2
+    - HumanEval_3
+    - HumanEval_4
+    - HumanEval_5
+    - HumanEval_6
+    - HumanEval_7
+    - HumanEval_8
+    - HumanEval_9
+    - HumanEval_10
+    - HumanEval_11
+    - HumanEval_12
+    - HumanEval_13
+    - HumanEval_14
+    - HumanEval_15
+    - HumanEval_16
+    - HumanEval_17
+    - HumanEval_18
+    - HumanEval_19
+total_cost: 2.175008399999998

@@ -1,0 +1,1 @@
+[PASS] - The filter_by_substring function implementation passes all tests and meets acceptance criteria. Comprehensive testing verified correct behavior for all edge cases including empty lists, empty substrings, case sensitivity, special characters, and proper list immutability. All 21 tests (original + comprehensive) pass successfully.

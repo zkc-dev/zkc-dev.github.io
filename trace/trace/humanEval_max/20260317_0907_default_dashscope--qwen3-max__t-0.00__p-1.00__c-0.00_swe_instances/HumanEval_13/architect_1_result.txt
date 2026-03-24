@@ -1,0 +1,1 @@
+The greatest_common_divisor function has been successfully implemented using Euclid'"'"'s algorithm. The solution handles the test cases correctly by repeatedly applying the modulo operation until one of the numbers becomes zero, then returning the absolute value of the remaining number. All tests in tests.py pass without errors.

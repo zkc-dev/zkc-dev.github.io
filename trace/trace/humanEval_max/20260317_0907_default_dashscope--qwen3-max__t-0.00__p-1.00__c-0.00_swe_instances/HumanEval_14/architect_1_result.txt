@@ -1,0 +1,1 @@
+The function `all_prefixes` has been correctly implemented to return all prefixes of a given string from shortest to longest. The solution passes all tests in `tests.py`, handling edge cases like empty strings and different character cases as expected.

@@ -1,0 +1,11 @@
+The task requires implementing a function that returns the longest string from a list of strings. Key requirements are:
+1. When the input list is empty, return None
+2. When multiple strings have the same maximum length, return the first occurrence
+3. Return the actual longest string when there'"'"'s a clear winner
+
+The main causes of potential issues would be:
+- Not handling empty list edge case properly
+- Not preserving order when multiple strings have the same maximum length
+- Incorrectly comparing string lengths or returning wrong data types
+
+The implementation needs to iterate through the list while tracking the current longest string, maintaining the first occurrence in case of ties, and properly handling the empty list scenario.

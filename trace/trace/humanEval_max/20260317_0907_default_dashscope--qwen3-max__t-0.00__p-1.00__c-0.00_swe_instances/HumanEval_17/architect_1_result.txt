@@ -1,0 +1,6 @@
+I have successfully implemented the `parse_music` function in `solution.py`. The function correctly parses musical note strings and converts them to their corresponding beat durations:
+- '"'"'o'"'"' → 4 beats (whole note)
+- '"'"'o|'"'"' → 2 beats (half note)  
+- '"'"'.|'"'"' → 1 beat (quarter note)
+
+The implementation handles empty strings, splits the input by spaces to get individual notes, and maps each note to its beat value using straightforward conditional logic. All test cases in `tests.py` pass, including the example from the docstring.

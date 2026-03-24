@@ -1,0 +1,16 @@
+The `longest` function in `solution.py` is already correctly implemented and requires no modifications. The implementation:
+
+1. Properly handles the empty list case by returning `None` (lines 14-15)
+2. Initializes the longest string as the first element (line 17)
+3. Iterates through remaining strings and only updates when a strictly longer string is found (lines 18-20), which preserves the first occurrence in case of ties
+4. Returns the correct result (line 22)
+
+The function passes all test cases in both the original `tests.py` file and additional comprehensive tests I created to verify edge cases including:
+- Empty lists
+- Single element lists  
+- Lists where all strings have the same length (returns first)
+- Lists with a clear longest string
+- Lists with multiple strings of maximum length (returns first occurrence)
+- Lists containing empty strings
+
+No code changes were necessary as the existing implementation already meets all requirements specified in the PR description.

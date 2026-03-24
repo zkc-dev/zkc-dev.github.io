@@ -1,0 +1,1 @@
+[PASS] - The implementation meets all requirements. The `longest` function correctly handles empty lists (returns None), preserves first occurrence in case of ties, and returns the actual longest string when there'"'"'s a clear winner. Comprehensive tests covering all edge cases pass successfully.

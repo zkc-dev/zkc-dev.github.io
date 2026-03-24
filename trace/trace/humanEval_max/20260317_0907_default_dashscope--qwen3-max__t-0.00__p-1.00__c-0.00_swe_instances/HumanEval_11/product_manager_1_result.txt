@@ -1,0 +1,18 @@
+The task requires implementing a function that performs binary XOR operation on two input strings consisting only of '"'"'0'"'"'s and '"'"'1'"'"'s, returning the result as a string. The key requirements are:
+
+1. Input validation: Both inputs must be strings containing only binary digits ('"'"'0'"'"' and '"'"'1'"'"')
+2. Length handling: The function should handle inputs of equal length (as implied by the example)
+3. XOR logic: For each position, apply XOR operation where:
+   - '"'"'0'"'"' XOR '"'"'0'"'"' = '"'"'0'"'"'
+   - '"'"'0'"'"' XOR '"'"'1'"'"' = '"'"'1'"'"' 
+   - '"'"'1'"'"' XOR '"'"'0'"'"' = '"'"'1'"'"'
+   - '"'"'1'"'"' XOR '"'"'1'"'"' = '"'"'0'"'"'
+4. Output format: Return the result as a string of the same length as inputs
+
+The primary cause of any implementation issues would be:
+- Not properly converting character digits to integers for XOR operation
+- Incorrect handling of string indexing or iteration
+- Failure to maintain the string output format
+- Not considering edge cases like empty strings or different length inputs (though the problem description suggests equal length inputs)
+
+The solution must produce character-by-character XOR results matching the expected binary XOR truth table and return them as a concatenated string.

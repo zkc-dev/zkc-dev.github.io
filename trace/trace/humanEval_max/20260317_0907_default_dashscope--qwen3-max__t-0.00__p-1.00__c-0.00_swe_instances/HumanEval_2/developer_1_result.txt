@@ -1,0 +1,16 @@
+I have successfully implemented and verified the `truncate_number` function in `/HumanEval_2/solution.py`. 
+
+**Files modified:**
+- `/HumanEval_2/solution.py` - Contains the complete implementation of the `truncate_number` function
+
+**Changes made:**
+- Implemented the function to return `number - int(number)`, which correctly extracts the decimal part of a positive floating-point number by subtracting the integer portion from the original number.
+
+**Reasoning:**
+- The implementation follows the mathematical definition: for a positive number, the decimal part equals the original number minus its integer part (largest integer smaller than the given number).
+- Using `int(number)` for positive numbers correctly gives us the floor/truncated integer part.
+- The solution handles floating-point precision issues appropriately, as evidenced by the test cases using tolerance checks (`abs(result - expected) < 1e-6`).
+- All original tests in `tests.py` pass, and additional comprehensive tests in `agent_tests/test_truncate_number.py` also pass.
+- Edge cases like whole numbers (e.g., 5.0 → 0.0), numbers less than 1 (e.g., 0.75 → 0.75), and large numbers with decimals are all handled correctly.
+
+The implementation is minimal, correct, and meets all requirements specified in the PR description.

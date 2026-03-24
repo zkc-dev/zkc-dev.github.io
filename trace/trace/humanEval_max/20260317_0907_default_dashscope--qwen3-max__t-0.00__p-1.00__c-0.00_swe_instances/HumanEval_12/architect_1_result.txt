@@ -1,0 +1,7 @@
+The function `longest` in `solution.py` has been successfully implemented to meet all requirements:
+
+1. Returns `None` when the input list is empty
+2. Returns the first string when multiple strings have the same maximum length 
+3. Returns the actual longest string when there'"'"'s a clear winner
+
+The implementation correctly handles all test cases in `tests.py` as verified by running the tests, which passed without errors. The solution uses a simple iterative approach that maintains O(n) time complexity and properly preserves the order of elements for tie-breaking.

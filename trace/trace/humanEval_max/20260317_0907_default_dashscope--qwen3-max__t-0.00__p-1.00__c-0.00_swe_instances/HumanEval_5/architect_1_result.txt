@@ -1,0 +1,1 @@
+Implemented the `intersperse` function in solution.py that correctly inserts a delimiter between every two consecutive elements of the input list. The implementation handles all edge cases including empty lists, single-element lists, and multi-element lists. The function passes all tests in tests.py and the doctests in the function docstring.

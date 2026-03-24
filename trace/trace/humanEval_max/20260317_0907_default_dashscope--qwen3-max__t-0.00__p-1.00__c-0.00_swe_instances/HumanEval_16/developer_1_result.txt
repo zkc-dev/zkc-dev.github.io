@@ -1,0 +1,17 @@
+I have successfully implemented the `count_distinct_characters` function in `/HumanEval_16/solution.py`. 
+
+**File Modified:**
+- `/HumanEval_16/solution.py`
+
+**Changes Made:**
+- Added the implementation `return len(set(string.lower()))` to the `count_distinct_characters` function
+
+**Reasoning:**
+The solution converts the input string to lowercase using `.lower()` to normalize case, then creates a set of characters to automatically handle deduplication of distinct characters, and finally returns the length of this set. This approach correctly handles all requirements:
+- Treats uppercase and lowercase letters as the same character
+- Counts distinct characters regardless of case
+- Handles edge cases like empty strings, strings with special characters, digits, and whitespace
+- Passes all test cases from both the docstring examples and the test suite
+- Has optimal time complexity O(n) and space complexity O(k) where k is the number of unique characters
+
+The implementation is minimal, efficient, and robust for all possible inputs.

@@ -1,0 +1,7 @@
+[PASS] - The implementation of the `how_many_times` function correctly counts overlapping occurrences of substrings. All tests pass including:
+1. Core requirements from docstring examples
+2. Original test cases from tests.py  
+3. Comprehensive edge cases (empty strings, no matches, exact matches, case sensitivity, special characters)
+4. Overlapping pattern verification
+
+The function handles all edge cases properly and correctly implements the overlapping counting logic by checking every possible starting position in the string. The implementation is robust and meets all specified requirements.

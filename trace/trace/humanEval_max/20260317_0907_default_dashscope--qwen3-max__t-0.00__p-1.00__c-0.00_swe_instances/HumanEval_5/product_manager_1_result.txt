@@ -1,0 +1,10 @@
+The task requires implementing a function `intersperse` that takes a list of integers and a delimiter integer, and returns a new list with the delimiter inserted between every two consecutive elements of the input list. 
+
+Key requirements analysis:
+1. When the input list is empty, the function should return an empty list
+2. When the input list has one element, the function should return a list containing just that element (no delimiters added)
+3. When the input list has multiple elements, the delimiter should be inserted between each pair of consecutive elements
+4. The original elements should maintain their order in the output
+5. The delimiter should only appear between elements, not at the beginning or end of the result
+
+The core problem is to handle the insertion logic correctly for all edge cases (empty list, single element list, multiple elements) while maintaining the original order of elements and ensuring delimiters only appear between consecutive elements.

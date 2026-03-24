@@ -1,0 +1,13 @@
+The problem requires implementing a function that counts the number of distinct characters in a string, treating uppercase and lowercase letters as the same character. Based on the examples provided:
+
+1. For input '"'"'xyzXYZ'"'"', the distinct characters are '"'"'x'"'"', '"'"'y'"'"', and '"'"'z'"'"' (since '"'"'X'"'"' is treated as '"'"'x'"'"', '"'"'Y'"'"' as '"'"'y'"'"', and '"'"'Z'"'"' as '"'"'z'"'"'), resulting in a count of 3.
+2. For input '"'"'Jerry'"'"', the distinct characters are '"'"'j'"'"', '"'"'e'"'"', '"'"'r'"'"', and '"'"'y'"'"' (since '"'"'J'"'"' is treated as '"'"'j'"'"'), resulting in a count of 4.
+
+The core requirement is to normalize the case of all characters (typically by converting to lowercase or uppercase) and then count the unique characters in the normalized string. The function should handle any string input, including empty strings, strings with special characters, digits, and whitespace, treating each character according to its case-normalized form.
+
+Possible causes of failure in an incorrect implementation might include:
+- Not normalizing the case of characters before counting distinct ones
+- Using a data structure that doesn'"'"'t properly track uniqueness
+- Incorrectly handling edge cases like empty strings or strings with non-alphabetic characters
+
+The solution must return an integer representing the count of distinct case-normalized characters in the input string.

@@ -1,0 +1,16 @@
+I implemented the `rolling_max` function in `/HumanEval_9/solution.py`. The function takes a list of integers and returns a list where each element is the maximum value seen so far in the input sequence up to that position. 
+
+Key changes:
+- Added handling for empty input (returns empty list)
+- Initialized current_max to the first element 
+- Iterated through all numbers, updating current_max when a larger value is found
+- Appended the running maximum to the result list for each position
+
+The implementation correctly handles all test cases including:
+- Empty lists
+- Increasing sequences  
+- Decreasing sequences
+- Mixed sequences with the example [1, 2, 3, 2, 3, 4, 2] → [1, 2, 3, 3, 3, 4, 4]
+- Edge cases with negative numbers and single elements
+
+The solution has O(n) time complexity and O(n) space complexity, which is optimal for this problem.
