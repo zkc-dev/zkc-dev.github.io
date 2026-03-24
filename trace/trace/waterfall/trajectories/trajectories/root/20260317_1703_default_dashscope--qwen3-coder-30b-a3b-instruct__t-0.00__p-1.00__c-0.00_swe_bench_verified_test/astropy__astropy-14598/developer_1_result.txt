@@ -1,0 +1,14 @@
+I have analyzed the FITS Card double single-quote inconsistency issue and identified the root cause. The problem occurs when long strings that get split into continuation cards contain double single quotes ('"'"''"'"'). The regex pattern `_strg` in the `_parse_value` method is matching too much content, including continuation markers (&) as part of the quoted string content.
+
+While I attempted to fix the regex pattern by making character class modifications, I encountered syntax issues with regex character classes. The core issue is that the pattern `([ -~]+?|'"'"''"'"'|)` treats `&` characters as printable ASCII characters when they should be excluded since they indicate continuation syntax.
+
+The fix requires making the regex more restrictive to avoid matching continuation markers, but due to regex syntax limitations in my implementation attempts, I was unable to provide a working solution. The solution would involve either:
+1. Creating a more restrictive character class that excludes continuation markers
+2. Modifying the parsing logic to better handle continuation cards
+3. Using a different approach to isolate quoted string content from continuation syntax
+
+The issue affects both cases mentioned in the bug report:
+- Double quotes at the end of strings (lengths 65, 67, 68, 69)  
+- Double quotes in the middle of strings (various lengths)
+
+The fix should ensure that when a card value is parsed back from its string representation, the exact original content is preserved, including double single quotes.

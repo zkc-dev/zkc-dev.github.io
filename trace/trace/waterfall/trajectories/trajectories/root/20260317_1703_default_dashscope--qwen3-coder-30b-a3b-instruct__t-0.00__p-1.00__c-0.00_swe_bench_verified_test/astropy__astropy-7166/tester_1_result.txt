@@ -1,0 +1,15 @@
+I have successfully tested the fix for the InheritDocstrings metaclass issue with properties. The problem was that the metaclass was using `inspect.isfunction()` which returns `False` for properties, causing them to be skipped during docstring inheritance. 
+
+The fix in `/testbed/astropy/utils/misc.py` correctly addresses this by:
+1. Updating the condition to check both `inspect.isfunction(val) or isinstance(val, property)`
+2. Adding special handling for properties to create new property objects with inherited docstrings
+3. Maintaining backward compatibility with existing function-based inheritance
+
+I created comprehensive tests in `/testbed/agent_tests/test_property_inheritance.py` that verify:
+- Properties correctly inherit docstrings from parent classes
+- Properties with existing docstrings are not overridden
+- Properties without base docstrings don'"'"'t get inherited docstrings
+- Mixed usage of functions and properties works correctly
+- All existing functionality remains intact
+
+All tests pass, confirming that the InheritDocstrings metaclass now works correctly for properties.

@@ -1,0 +1,21 @@
+I have successfully implemented support for header_rows parameter in RestructuredText (RST) output format. 
+
+**Problem**: The RST class in astropy/io/ascii/rst.py inherited from FixedWidth but didn'"'"'t accept or pass the header_rows parameter, causing a TypeError when trying to use header_rows with RST format.
+
+**Solution**: Modified the RST class constructor in /testbed/astropy/io/ascii/rst.py to:
+1. Accept header_rows parameter with default None
+2. Pass it to the parent FixedWidth class constructor
+
+**Changes Made**:
+- File: /testbed/astropy/io/ascii/rst.py
+- Changed `def __init__(self):` to `def __init__(self, header_rows=None):`  
+- Updated parent call to include `header_rows=header_rows`
+
+**Verification**:
+- Reproduced original issue and confirmed fix resolves it
+- Tested exact examples from issue description - now work correctly
+- All existing RST and fixed-width tests continue to pass
+- Backward compatibility maintained
+- Edge cases handled properly
+
+The fix enables users to use `tbl.write(sys.stdout, format="ascii.rst", header_rows=["name", "unit"])` as requested in the issue description.

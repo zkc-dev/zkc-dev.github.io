@@ -1,0 +1,34 @@
+I have successfully identified and fixed the issue with the `separability_matrix` function in astropy'"'"'s modeling module when dealing with nested CompoundModels.
+
+## Problem Analysis
+The issue was in the `_cstack` function in `/testbed/astropy/modeling/separable.py` (lines 242-245). When processing nested compound models, the function received already-computed coordinate matrices (as ndarrays) from recursive calls, but incorrectly treated them as if they were Model objects and filled regions with 1s instead of properly mapping the existing coordinate information.
+
+## Root Cause
+In the problematic code:
+```python
+else:
+    cright = np.zeros((noutp, right.shape[1]))
+    cright[-right.shape[0]:, -right.shape[1]:] = 1  # Wrong - fills with 1s
+```
+
+When `right` was already a coordinate matrix (ndarray) from a recursive call, it was being filled with 1s instead of preserving the actual coordinate mapping.
+
+## Solution
+I changed line 245 from:
+```python
+cright[-right.shape[0]:, -right.shape[1]:] = 1
+```
+to:
+```python
+cright[-right.shape[0]:, -right.shape[1]:] = right
+```
+
+This ensures that when `right` is already a coordinate matrix (ndarray), it'"'"'s properly placed in the resulting matrix rather than being replaced with 1s.
+
+## Verification
+1. **Issue Reproduction**: Confirmed the original problem with the reproduction script
+2. **Fix Validation**: After the fix, nested models now produce the same separability matrix as their flattened equivalents
+3. **Regression Testing**: All existing separability tests continue to pass (11/11 tests passed)
+4. **Additional Testing**: Created comprehensive tests to verify the fix works correctly
+
+The fix is minimal, targeted, and preserves backward compatibility while resolving the specific issue with nested CompoundModels in the separability matrix computation.

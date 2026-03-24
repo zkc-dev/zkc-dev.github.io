@@ -1,0 +1,40 @@
+I have successfully implemented the requested changes to address the issue with auto-transforming structured columns into NdarrayMixin. 
+
+## Changes Made:
+
+**File Modified:** `/testbed/astropy/table/table.py`
+
+**Specific Change:** In the `_convert_data_to_col` method (lines 1242-1254), I replaced the direct structured array transformation with a version that issues a FutureWarning:
+
+```python
+# Structured ndarray gets viewed as a mixin unless already a valid
+# mixin class
+if (not isinstance(data, Column) and not data_is_mixin
+        and isinstance(data, np.ndarray) and len(data.dtype) > 1):
+    warnings.warn(
+        "Automatic conversion of structured ndarray to NdarrayMixin is "
+        "deprecated and will be removed in astropy 5.2. "
+        "To retain the current behavior, wrap the data in a Column. "
+        "To get a structured Column instead, use "
+        "Table({'"'"'data'"'"': Column(data)}).",
+        FutureWarning, stacklevel=2)
+    data = data.view(NdarrayMixin)
+    data_is_mixin = True
+```
+
+## Behavior Implemented:
+
+1. **Backward Compatibility:** Structured arrays are still converted to NdarrayMixin (existing behavior preserved)
+2. **Warning System:** Users now receive a clear FutureWarning indicating the deprecation
+3. **Migration Path:** Warning provides specific instructions on how to migrate code
+4. **Alternatives Work:** Using `Column(data)` or `Column(data, name='"'"'column_name'"'"')` works without warnings
+
+## Testing:
+
+Created comprehensive test scripts that verify:
+- The FutureWarning is properly issued when structured arrays are used
+- Alternative approaches (Column wrapper) work without warnings  
+- Regular arrays continue to work normally
+- Multiple structured arrays scenarios work correctly
+
+The implementation follows the exact specification in the issue description, providing a smooth transition path for users while preparing for the eventual removal of this behavior in version 5.2.

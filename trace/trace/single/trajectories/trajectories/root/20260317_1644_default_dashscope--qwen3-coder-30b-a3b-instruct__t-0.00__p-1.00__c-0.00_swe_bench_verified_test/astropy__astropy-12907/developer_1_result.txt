@@ -1,0 +1,22 @@
+I have successfully fixed the bug in the `separability_matrix` function for nested CompoundModels in the astropy modeling module.
+
+## Problem
+The issue was in the `_cstack` function in `/testbed/astropy/modeling/separable.py`. When processing nested compound models like `Pix2Sky_TAN() & (Linear1D(10) & Linear1D(5))`, the function incorrectly handled coordinate matrices that were already computed from recursive calls to `_separable`. Specifically, line 245 was filling the matrix with 1s instead of copying the actual coordinate values.
+
+## Fix Applied
+Changed line 245 in `/testbed/astropy/modeling/separable.py` from:
+```python
+cright[-right.shape[0]:, -right.shape[1]:] = 1
+```
+to:
+```python
+cright[-right.shape[0]:, -right.shape[1]:] = right
+```
+
+## Verification
+- The exact issue from the problem description now works correctly
+- Nested compound models produce the same separability matrices as their non-nested equivalents
+- All existing separability tests continue to pass
+- No regressions introduced in the broader modeling functionality
+
+The fix is minimal, targeted, and maintains full backward compatibility while resolving the specific issue with nested CompoundModels in separability matrix computation.

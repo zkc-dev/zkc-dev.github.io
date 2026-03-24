@@ -1,0 +1,27 @@
+I have successfully fixed the minversion failures caused by the bug in distutils.version.LooseVersion when comparing versions with dev suffixes.
+
+## Changes Made
+
+**File Modified**: `/testbed/astropy/utils/introspection.py`
+
+### Key Changes:
+
+1. **Updated imports**: Changed from importing only `LooseVersion` to a try/except block that imports `pkg_resources.parse_version` first, falling back to `distutils.version.LooseVersion` if unavailable.
+
+2. **Enhanced `minversion` function**: Modified the version comparison logic to:
+   - First attempt to use `pkg_resources.parse_version` which properly handles dev versions (fixes the reported TypeError)
+   - Fall back to the original `LooseVersion` approach if `pkg_resources` is not available
+   - Maintain the same API and behavior for all existing use cases
+
+### Problem Solved
+
+The original issue occurred when trying to compare versions like `'"'"'1.14.3'"'"'` with `'"'"'1.14dev'"'"'` using `LooseVersion`, which raised a `TypeError: '"'"'<'"'"' not supported between instances of '"'"'int'"'"' and '"'"'str'"'"'` due to a known bug in Python'"'"'s `distutils.version.LooseVersion`.
+
+### Verification
+
+1. **Fixed the exact issue**: The failing case `minversion('"'"'numpy'"'"', '"'"'1.14dev'"'"')` now works correctly instead of throwing a TypeError
+2. **Maintained backward compatibility**: All existing tests pass (4/4 tests in test_introspection.py)
+3. **Proper fallback handling**: The code gracefully falls back to `LooseVersion` when `pkg_resources` is not available
+4. **Comprehensive testing**: Verified with multiple test scenarios including edge cases
+
+The fix ensures that version comparisons with dev suffixes work correctly while maintaining full compatibility with existing code.

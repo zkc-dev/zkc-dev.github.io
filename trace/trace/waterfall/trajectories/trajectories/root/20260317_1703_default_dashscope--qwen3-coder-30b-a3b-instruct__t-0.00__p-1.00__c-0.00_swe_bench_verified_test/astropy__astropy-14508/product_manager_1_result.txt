@@ -1,0 +1,17 @@
+## Problem Analysis
+
+The issue is in the `_format_float()` function in `astropy/io/fits/card.py` (lines 1300-1328). When creating `io.fits.Card` objects with float values, the function uses `f"{value:.16G}"` which can produce unnecessarily long string representations.
+
+For example, the float `0.009125` gets formatted as `"0.009124999999999999"` (20 chars) instead of `"0.009125"` (8 chars), causing card length overflow and comment truncation.
+
+## Root Cause
+The `_format_float()` function always uses `f"{value:.16G}"` formatting regardless of whether Python'"'"'s native `str(value)` would produce a shorter, equivalent representation.
+
+## Requirements for Fix
+1. Modify `_format_float()` to prefer Python'"'"'s built-in string representation (`str(value)`) when it'"'"'s shorter and within 20-character limit
+2. Fall back to current `.16G` formatting only when needed (for very long representations or special cases)
+3. Maintain backward compatibility and existing behavior for edge cases
+4. Ensure valid FITS cards can be created matching exact representations from valid FITS files
+
+## Solution Approach
+Before applying `f"{value:.16G}"`, check if `str(value)` produces a shorter representation that fits within 20 characters. If so, use that instead.

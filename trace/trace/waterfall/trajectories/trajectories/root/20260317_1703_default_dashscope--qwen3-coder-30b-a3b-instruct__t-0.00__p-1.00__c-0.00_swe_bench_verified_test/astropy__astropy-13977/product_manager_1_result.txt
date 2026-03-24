@@ -1,0 +1,13 @@
+Based on my analysis of the issue with `Quantity.__array_ufunc__()` raising `ValueError` instead of returning `NotImplemented`, I'"'"'ve identified the core problem and requirements:
+
+**Problem**: When performing ufunc operations where a `Quantity` is on the left side with different units and a duck-type object is on the right, the `Quantity.__array_ufunc__()` method raises a `ValueError` instead of returning `NotImplemented`. This prevents proper fallback to reflected operators like `__radd__`.
+
+**Root Cause**: In the `__array_ufunc__` method, when processing inputs through converters, the `_condition_arg()` function raises a `ValueError` for incompatible inputs (like duck-type objects), but this exception isn'"'"'t caught and handled appropriately.
+
+**Requirements**: 
+1. Modify `Quantity.__array_ufunc__()` to catch `ValueError` exceptions during input processing
+2. Return `NotImplemented` instead of propagating the `ValueError` 
+3. Preserve all existing functionality for valid cases
+4. Align with NumPy'"'"'s documented behavior for `__array_ufunc__`
+
+This change will enable proper duck typing support and align with NumPy'"'"'s guidelines for handling incompatible operations in `__array_ufunc__`.

@@ -1,0 +1,19 @@
+I have successfully fixed the NDDataRef mask propagation issue in v5.3. 
+
+**Problem**: When performing arithmetic operations with `handle_mask=np.bitwise_or` on NDDataRef objects, if one operand had no mask (mask=None) and the other had a mask, the code would fail with `TypeError: unsupported operand type(s) for |: '"'"'int'"'"' and '"'"'NoneType'"'"'`.
+
+**Root Cause**: The `_arithmetic_mask` method in `/testbed/astropy/nddata/mixins/ndarithmetic.py` had flawed logic that didn'"'"'t properly handle cases where one operand has a mask and the other doesn'"'"'t, leading to attempts to perform bitwise OR operations with None values.
+
+**Solution**: I completely rewrote the `_arithmetic_mask` method (lines 485-532) with clearer conditional logic:
+1. If `handle_mask is None`, return `None` 
+2. If only one operand has a mask, return that mask (properly deep-copied)
+3. If both operands have masks, apply the `handle_mask` function
+4. If neither has a mask, return `None`
+
+**Verification**: 
+- Fixed the exact reproduction case from the bug report
+- All existing tests continue to pass
+- Comprehensive testing confirms the fix works for all arithmetic operations (add, subtract, multiply, divide)
+- Edge cases with various combinations of masked/unmasked operands work correctly
+
+The fix is minimal, targeted, and maintains backward compatibility while resolving the TypeError that occurred in v5.3.

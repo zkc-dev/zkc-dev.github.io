@@ -1,0 +1,24 @@
+I have successfully fixed the issue with `io.fits.FITSDiff` incorrectly reporting differences between identical files when dealing with variable-length arrays (VLAs).
+
+## Problem Analysis
+The issue occurred in the `TableDataDiff._diff()` method in `/testbed/astropy/io/fits/diff.py`. When comparing identical variable-length arrays, the code attempted to use `np.where(arra != arrb)` directly, which fails when arrays have different shapes (e.g., `[0.]` vs `[0., 0.]`). Additionally, the format detection was incomplete - it only checked for "P" format but not "Q" format which is also used for variable-length arrays.
+
+## Solution Implemented
+1. **Enhanced Format Detection**: Updated the condition from `"P" in col.format` to `"P" in col.format or "Q" in col.format"` to properly handle both "P" and "Q" format variable-length arrays.
+
+2. **Added Robust Comparison Method**: Created a new `_arrays_equal()` helper method that safely compares arrays with potentially different shapes, handling edge cases gracefully.
+
+3. **Improved Logic Flow**: Replaced the problematic direct comparison with proper VLA-aware comparison logic.
+
+## Key Changes Made
+- Modified `/testbed/astropy/io/fits/diff.py` lines 1452-1462: Enhanced VLA format detection
+- Added `_arrays_equal()` method (lines 1489-1523): Safe array comparison for VLA handling
+- The fix maintains full backward compatibility
+
+## Verification
+✅ Fixed the exact reproduction case from the issue description  
+✅ All existing FITS diff tests pass (48/48)  
+✅ Comprehensive edge case testing (empty arrays, mixed formats, different data)  
+✅ No regression in existing functionality  
+
+The fix ensures that `FITSDiff('"'"'file.fits'"'"', '"'"'file.fits'"'"').identical` now correctly returns `True` for identical files, resolving the bug where it was incorrectly reporting differences.

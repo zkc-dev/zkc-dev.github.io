@@ -1,0 +1,22 @@
+I have successfully fixed the issue with `io.fits.Card` using unnecessarily large string representations of floats that caused comment truncation.
+
+## Problem
+The `_format_float()` function in `/testbed/astropy/io/fits/card.py` was using `f"{value:.16G}"` which produced longer string representations like "0.009124999999999999" instead of the shorter "0.009125" for the value 0.009125. This caused cards to exceed 80 characters, triggering warnings about comment truncation.
+
+## Solution
+Modified the `_format_float()` function to:
+1. First try Python'"'"'s built-in `str(value)` representation for shorter, more accurate representations
+2. Only fall back to the original `.16G` formatting if the string exceeds 20 characters
+3. Preserve all existing functionality for edge cases and scientific notation
+
+## Files Changed
+- `/testbed/astropy/io/fits/card.py`: Updated `_format_float()` function (lines 1300-1333)
+
+## Verification
+- The exact issue scenario now works without warnings
+- Cards maintain proper 80-character length
+- Comments are no longer truncated
+- All existing functionality preserved
+- Various edge cases tested and working correctly
+
+The fix ensures that any valid FITS Card can now be created via `io.fits.Card` without artificial truncation issues.

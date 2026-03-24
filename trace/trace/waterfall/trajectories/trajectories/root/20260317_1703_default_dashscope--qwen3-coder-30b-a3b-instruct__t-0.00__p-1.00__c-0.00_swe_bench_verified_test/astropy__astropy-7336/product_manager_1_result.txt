@@ -1,0 +1,20 @@
+I'"'"'ve analyzed the issue with the units.quantity_input decorator failing for constructors with type hinted return value -> None.
+
+**Problem Understanding:**
+The issue occurs when using the `@u.quantity_input` decorator on constructors (`__init__` methods) that have a return type hint of `-> None`. The decorator tries to call `.to()` on the return value to convert it to the specified return annotation unit, but when a constructor has `-> None` annotation, it actually returns `None` (since constructors implicitly return None), and `None` doesn'"'"'t have a `.to()` method.
+
+**Root Cause:**
+In `/testbed/astropy/units/decorators.py` at lines 223-224, the code assumes all return annotations represent units with `.to()` method:
+```python
+if wrapped_signature.return_annotation is not inspect.Signature.empty:
+    return return_.to(wrapped_signature.return_annotation)
+```
+
+**Requirements for Fix:**
+1. Handle the special case where return annotation is `None` (indicating no return value)
+2. Skip unit conversion when return annotation is `None` 
+3. Maintain backward compatibility
+4. Minimal, focused change that doesn'"'"'t affect other functionality
+
+**Solution:**
+Add a check to detect when `wrapped_signature.return_annotation` is `None` and skip the `.to()` conversion in that case, since constructors returning `None` don'"'"'t need unit conversion.

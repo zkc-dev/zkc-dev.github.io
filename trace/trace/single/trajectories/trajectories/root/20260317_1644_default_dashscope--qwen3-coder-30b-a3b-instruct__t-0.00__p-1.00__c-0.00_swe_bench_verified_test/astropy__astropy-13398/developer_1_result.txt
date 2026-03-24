@@ -1,0 +1,29 @@
+I have successfully implemented the direct ITRS to Observed transformations that stay within the ITRS framework as described in the pull request. 
+
+## Changes Made:
+
+1. **Created new file**: `/testbed/astropy/coordinates/builtin_frames/itrs_observed_transforms.py`
+   - Implements ITRS to AltAz and HADec transformations using the approach from the PR
+   - Avoids geocentric vs topocentric aberration issues by keeping transformations within ITRS
+   - Includes both forward (ITRS → observed) and reverse (observed → ITRS) transformations
+   - Properly handles left-handed coordinate systems and rotation matrices
+
+2. **Modified file**: `/testbed/astropy/coordinates/builtin_frames/__init__.py`
+   - Added import statement for the new `itrs_observed_transforms` module
+   - Ensures transformations are automatically registered in the transformation graph
+
+## Key Features:
+- Direct approach that stays within ITRS framework
+- Treats ITRS coordinates as time-invariant (avoiding synchronization issues)
+- Proper rotation matrices for both AltAz and HADec coordinate systems
+- Topocentric calculations by subtracting observer'"'"'s ITRS position
+- Round-trip consistency ensuring invertibility
+- Backward compatible with existing ICRS-based transformations
+
+## Testing:
+- Verified that both ITRS→AltAz and ITRS→HADec transformations work correctly
+- Confirmed round-trip transformations preserve coordinate information
+- Tested that existing ICRS-based transformations still work unchanged
+- All functionality verified through comprehensive testing
+
+The implementation addresses the recurring issues with ITRS to AltAz transforms and provides a more intuitive and accurate approach for observing satellites and other objects.

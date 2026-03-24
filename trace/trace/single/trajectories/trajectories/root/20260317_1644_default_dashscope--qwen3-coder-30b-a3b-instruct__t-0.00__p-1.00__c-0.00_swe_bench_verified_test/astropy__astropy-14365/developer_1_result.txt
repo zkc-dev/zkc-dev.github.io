@@ -1,0 +1,19 @@
+I have successfully fixed the issue where the ascii.qdp Table format assumed QDP commands were uppercase. 
+
+**Problem**: The QDP reader only accepted uppercase commands like "READ SERR 1 2" but QDP files can have lowercase commands like "read serr 1 2" since QDP itself is case-insensitive.
+
+**Solution**: Modified the `_line_type` function in `/testbed/astropy/io/ascii/qdp.py` to make the command matching case-insensitive by adding the `(?i)` flag at the beginning of the regex pattern (line 70).
+
+**Changes Made**:
+- File: `/testbed/astropy/io/ascii/qdp.py`
+- Changed line 70 from: `_type_re = rf"^\s*((?P<command>{_command_re})|(?P<new>{_new_re})|(?P<data>{_data_re})?\s*(\!(?P<comment>.*))?\s*$"`
+- To: `_type_re = rf"(?i)^\s*((?P<command>{_command_re})|(?P<new>{_new_re})|(?P<data>{_data_re})?\s*(\!(?P<comment>.*))?\s*$"`
+
+**Verification**:
+✅ The exact example from the issue now works: `read serr 1 2` followed by data
+✅ All existing tests continue to pass (8/8 tests passing)
+✅ Both uppercase and lowercase commands work correctly  
+✅ Both TERR and SERR commands work in any case
+✅ Backward compatibility maintained
+
+The fix is minimal, focused, and adds the requested case-insensitivity feature without breaking any existing functionality.

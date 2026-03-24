@@ -1,0 +1,31 @@
+## Test Report: Minversion Failures Fix Verification
+
+### Summary
+I have thoroughly tested the fix for the minversion failures issue in the astropy repository. The problem was caused by PR #7647 which removed a workaround for a bug in `distutils.version.LooseVersion` when comparing version strings with dev suffixes (like "1.14dev").
+
+### Key Findings
+1. **Root Cause Confirmed**: The issue occurred when `LooseVersion('"'"'1.14.3'"'"') >= LooseVersion('"'"'1.14dev'"'"')` raised `TypeError: '"'"'<'"'"' not supported between instances of '"'"'int'"'"' and '"'"'str'"'"'` due to a bug in Python'"'"'s distutils.version module.
+
+2. **Fix Implemented**: The `minversion` function in `/testbed/astropy/utils/introspection.py` was updated to:
+   - First attempt to use `pkg_resources.parse_version` (which handles dev versions correctly)
+   - Fall back gracefully to `distutils.version.LooseVersion` with try/except error handling
+   - Maintain full backward compatibility
+
+3. **Verification Results**: All tests pass successfully:
+   - ✅ The exact failing case `minversion('"'"'numpy'"'"', '"'"'1.14dev'"'"')` now works correctly
+   - ✅ Direct LooseVersion comparison still fails as expected (this is the underlying bug)
+   - ✅ The fallback mechanism works properly when needed
+   - ✅ All existing tests continue to pass (`test_minversion` and other introspection tests)
+   - ✅ Various version comparison scenarios work correctly
+   - ✅ Backward compatibility maintained for all other use cases
+
+### Test Coverage
+I created comprehensive tests covering:
+1. The exact issue scenario from the bug report
+2. Edge cases with dev versions
+3. Backward compatibility with normal version comparisons
+4. Verification that the underlying LooseVersion bug still exists as expected
+5. Integration with existing astropy test suite
+
+### Conclusion
+[PASS] The minversion failures issue has been successfully resolved. The fix properly handles dev version comparisons while maintaining full backward compatibility and passing all existing tests.

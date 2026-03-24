@@ -1,0 +1,17 @@
+I have successfully implemented and tested a fix for the `io.fits.Card` float formatting issue. 
+
+**Problem**: The `_format_float()` function in `astropy/io/fits/card.py` was always using `f"{value:.16G}"` formatting, which produced unnecessarily long string representations like "0.009124999999999999" instead of "0.009125" for the value 0.009125. This caused FITS cards to exceed their 80-character limit, forcing comments to be truncated.
+
+**Solution**: Modified the `_format_float()` function to:
+1. First try Python'"'"'s built-in string representation (`str(value)`) which often produces shorter, equivalent representations
+2. Only fall back to the original `.16G` formatting when needed (when the built-in representation is longer than 20 characters)
+3. Preserve all existing functionality and 20-character limit enforcement
+
+**Verification**: 
+- Created comprehensive tests confirming the exact issue case now works correctly
+- Verified that cards no longer trigger comment truncation warnings
+- Confirmed backward compatibility is maintained
+- All existing FITS functionality continues to work properly
+- The fix allows creating any valid FITS Card via `io.fits.Card` that matches exact representations from valid FITS files
+
+The fix is minimal, targeted, and completely resolves the reported issue while maintaining full backward compatibility.

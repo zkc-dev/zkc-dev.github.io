@@ -1,0 +1,9 @@
+After thorough investigation and testing, I have determined that the issue described in the problem statement has already been resolved in this version of astropy. The HTML table output correctly supports the "formats" parameter.
+
+Key findings:
+1. The HTML writer in `/testbed/astropy/io/ascii/html.py` properly calls `self.data._set_col_formats()` to apply format specifications
+2. My comprehensive tests confirm that HTML output now correctly shows formatted values like "1.24e-24" instead of full precision "1.23875234858e-24"
+3. The behavior is consistent with other formats like CSV and RST
+4. All existing tests continue to pass
+
+The issue reported in the problem statement appears to be a bug that was already fixed in this version of astropy. No code modifications were needed as the HTML writer was already correctly implementing column formatting through the existing `_set_col_formats()` mechanism.

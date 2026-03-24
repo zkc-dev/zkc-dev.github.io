@@ -1,0 +1,22 @@
+## Problem Analysis Summary
+
+I'"'"'ve identified the root cause of the issue where ASCII table output to HTML does not support the "formats" parameter.
+
+### Understanding of the Problem
+The HTML table writer in astropy ignores the `formats` parameter that should control column formatting, while other formats like CSV and RST properly apply formatting.
+
+### Root Cause
+In `/testbed/astropy/io/ascii/html.py`, the `write()` method directly calls `col.info.iter_str_vals()` without ensuring that column formats are properly applied. Other writers use the `_set_col_formats()` method to set column formats before processing values, but the HTML writer bypasses this mechanism.
+
+### Key Findings
+1. The HTML writer calls `col.info.iter_str_vals()` directly instead of using the formatted values
+2. The `_set_col_formats()` method is not invoked in the HTML writer'"'"'s workflow
+3. Other formats properly apply formatting through the established mechanism
+
+### Requirements for Fix
+1. Apply column formats in HTML writer by calling `_set_col_formats()` before processing values
+2. Ensure HTML writer uses properly formatted column values instead of raw ones
+3. Maintain backward compatibility for HTML tables without format specifications
+4. Make minimal, targeted changes to resolve the specific issue
+
+The fix involves modifying the HTML writer'"'"'s `write()` method to properly integrate with the existing column formatting infrastructure used by other writers.

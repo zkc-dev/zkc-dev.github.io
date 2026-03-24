@@ -1,0 +1,17 @@
+I have successfully fixed the inconsistent behavior of `world_to_pixel` in `SlicedLowLevelWCS`. 
+
+**Problem**: When using `SlicedLowLevelWCS` with WCS systems that have PC (Position Convention) matrices coupling spatial and spectral dimensions, the `world_to_pixel_values` method was using a hardcoded dummy value of 1.0 for dropped world dimensions, leading to incorrect results. In the reported case, instead of getting ~49.5 for the x-coordinate, users got ~181 billion.
+
+**Root Cause**: In `/testbed/astropy/wcs/wcsapi/wrappers/sliced_wcs.py`, line 254 was using `world_arrays_new.append(1.)` for dropped world dimensions, which is inappropriate for PC-coupled WCS systems.
+
+**Solution**: I replaced the hardcoded dummy value with the proper reference value from the WCS:
+- Changed line 254 from `world_arrays_new.append(1.)` to `world_arrays_new.append(self._wcs.wcs.crval[iworld])`
+- This uses the CRVAL (coordinate reference value) for the dropped world dimension, which is mathematically appropriate
+
+**Verification**:
+1. The original failing case now works correctly, returning x ≈ 49.5 instead of ~181 billion
+2. All existing tests pass (40/40 tests in the sliced WCS test suite)
+3. Backward compatibility is maintained
+4. Edge cases work correctly with various WCS configurations
+
+The fix is minimal, targeted, and resolves the specific issue while maintaining full compatibility with existing functionality.

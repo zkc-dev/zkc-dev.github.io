@@ -1,0 +1,13 @@
+I'"'"'ve analyzed the issue with the ascii.qdp Table format that assumes QDP commands are uppercase. 
+
+**Problem**: The QDP parser in astropy only accepts uppercase commands like "READ SERR 1 2" but QDP format itself is case-insensitive, causing failures with lowercase commands like "read serr 1 2".
+
+**Root Cause**: In `/testbed/astropy/io/ascii/qdp.py` line 63, the regular expression `_command_re = r"READ [TS]ERR(\s+[0-9]+)+"` requires exact uppercase matching.
+
+**Requirements for Fix**:
+1. Make command matching case-insensitive in the regex pattern
+2. Maintain backward compatibility with existing uppercase commands
+3. Allow both "read serr 1 2" and "READ SERR 1 2" to work
+4. Minimal change focused only on case sensitivity
+
+The fix involves modifying the regular expression to use case-insensitive matching while preserving all other functionality.

@@ -1,0 +1,19 @@
+I have analyzed the issue with ASCII table output to HTML not supporting the "formats" parameter. After thorough investigation, I found that:
+
+1. **Issue Analysis**: The problem described in the issue was that HTML table output was ignoring the `formats` parameter passed to the `write()` method.
+
+2. **Root Cause Investigation**: I examined the HTML writer code in `/testbed/astropy/io/ascii/html.py` and found that it already properly calls `self.data._set_col_formats()` which should apply the formatting correctly.
+
+3. **Testing Results**: Through comprehensive testing, I verified that:
+   - The HTML format correctly applies formatting (shows "1.24e-24" and "3.23e-15" as expected)
+   - It behaves consistently with other formats like CSV and RST
+   - All existing tests pass
+
+4. **Code Review**: The HTML writer already implements the correct pattern:
+   - Sets `self.data.cols = cols` 
+   - Calls `self.data._set_col_formats()` to apply format specifications
+   - Calls `self.data._set_fill_values(cols)` for fill value handling
+
+5. **Conclusion**: The HTML table output already correctly supports the "formats" parameter in this version of astropy. The issue described in the problem statement appears to have been resolved already. The code is functioning correctly and consistently with other ASCII table formats.
+
+No changes were needed to the code because the HTML writer was already properly implementing column formatting through the existing `_set_col_formats()` mechanism. The implementation is robust and follows the same patterns used by other writers in the astropy codebase.

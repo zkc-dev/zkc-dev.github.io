@@ -1,0 +1,26 @@
+## Requirements Analysis Summary
+
+### Problem Understanding
+The issue occurs when comparing an `UnrecognizedUnit` with `None`. Instead of returning `False` (as expected in Python), it raises a `TypeError` because the `UnrecognizedUnit.__eq__` method directly attempts to convert `None` to a Unit without checking for the `None` case first.
+
+### Root Cause
+In `/testbed/astropy/units/core.py` at line 1712-1714, the `UnrecognizedUnit.__eq__` method:
+```python
+def __eq__(self, other):
+    other = Unit(other, parse_strict='"'"'silent'"'"')  # This line fails when other is None
+    return isinstance(other, UnrecognizedUnit) and self.name == other.name
+```
+
+The method doesn'"'"'t handle the case where `other` is `None`, causing a `TypeError: "None is not a valid Unit"` when `Unit(None, parse_strict='"'"'silent'"'"')` is called.
+
+### Requirements for Fix
+1. **Behavioral**: Comparisons between `UnrecognizedUnit` and `None` should return `False` (consistent with Python semantics)
+2. **Consistency**: Should behave like standard Python comparisons where any object compared to `None` returns `False` for equality
+3. **Backward Compatibility**: Must not break existing functionality
+4. **Implementation**: Add explicit `None` check before attempting Unit conversion in `UnrecognizedUnit.__eq__`
+
+### Solution Approach
+Modify the `UnrecognizedUnit.__eq__` method to check if `other` is `None` and return `False` immediately in that case, similar to how the base `Unit.__eq__` method handles conversion failures by catching exceptions.
+
+### Test Validation
+Created test case that reproduces the issue and will verify the fix works correctly.

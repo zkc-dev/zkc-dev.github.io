@@ -1,0 +1,23 @@
+## Requirements Analysis Summary
+
+### Problem Understanding
+The issue is an IndexError occurring in the `is_fits` function in `astropy/io/fits/connect.py` at line 72. When `identify_format` is called with a filename that doesn'"'"'t have a FITS extension (e.g., "bububu.ecsv"), the function attempts to access `args[0]` but `args` is empty, causing an IndexError.
+
+### Root Cause Analysis
+1. The `is_fits` function is designed to identify whether a file is a FITS file
+2. When a file path doesn'"'"'t end with FITS extensions, the function falls through to line 72
+3. Line 72 tries to check `isinstance(args[0], ...)` assuming args contains at least one element
+4. However, when `identify_format` is called for write operations, `args` can be empty
+5. This results in `IndexError: tuple index out of range`
+
+### Requirements for Fix
+1. Add a guard condition to check if `args` has elements before accessing `args[0]`
+2. Return False when `args` is empty (cannot determine if it'"'"'s FITS without data)
+3. Preserve existing functionality for valid cases where `args` contains data
+4. Make minimal changes to avoid breaking other functionality
+
+### Technical Requirements
+- Modify `astropy/io/fits/connect.py` in the `is_fits` function
+- Ensure the fix handles both empty and non-empty `args` scenarios properly
+- Maintain backward compatibility
+- Don'"'"'t alter the function signature or expected behavior for valid inputs

@@ -1,0 +1,44 @@
+I have thoroughly analyzed the double single-quote inconsistency issue in FITS Card as described in the problem statement.
+
+## Problem Analysis
+
+The issue occurs when FITS Cards with double single quotes (`'"'"''"'"'`) in their values undergo a round-trip process (Card creation → string conversion → Card parsing). The inconsistency manifests at specific string length boundaries where the card gets split into multiple lines due to the 80-character limit.
+
+## Root Cause
+
+The problem stems from the interaction between:
+1. Card formatting logic that correctly escapes single quotes by doubling them (`'"'"'` → `'"'"''"'"'`)
+2. Card parsing logic that unescapes double quotes back to single quotes (`'"'"''"'"'` → `'"'"'`)
+3. The regex pattern used for parsing quoted strings that doesn'"'"'t properly handle continuation cards
+
+## Detailed Findings
+
+When a card value is long enough to exceed 80 characters, it gets split into multiple cards with CONTINUE conventions. The regex pattern `_strg = r"\'"'"'(?P<strg>([ -~]+?|\'"'"'\'"'"'|) *?)\'"'"'(?=$|/| )"` in the `_parse_value` method incorrectly matches too much content when continuation cards are present, including the continuation markers.
+
+This results in:
+- Original string: `"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"'"''"'"'"` (67 characters)
+- After parsing: `"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"'"'"` (66 characters)
+- The last character is lost due to incorrect regex matching
+
+## Technical Details
+
+The issue occurs because:
+1. The regex pattern matches from the first quote to the last quote in the card
+2. This includes continuation markers like `&'"'"'CONTINUE  '"'"''"'"''"'"'` 
+3. The unescaping logic then processes this extended content incorrectly
+4. The result is a truncated string with one fewer character
+
+## Solution Approach
+
+While I attempted several regex modifications, the fundamental issue requires a more comprehensive fix to the card continuation handling logic. The problem involves:
+- Proper parsing of continuation cards
+- Correct reconstruction of multi-line string values
+- Accurate application of unescaping only to the intended quoted content
+
+This is a complex architectural issue in the FITS card system that would require significant changes to the card parsing and formatting logic to properly handle continuation cards while preserving the exact string content.
+
+The issue affects both cases mentioned in the bug report:
+1. Double quotes at the end of strings (lengths 65, 67, 68, 69)
+2. Double quotes in the middle of strings (various lengths)
+
+The fix would require modifying the card parsing logic to properly handle continuation cards and ensure that quoted string content is correctly isolated and processed.

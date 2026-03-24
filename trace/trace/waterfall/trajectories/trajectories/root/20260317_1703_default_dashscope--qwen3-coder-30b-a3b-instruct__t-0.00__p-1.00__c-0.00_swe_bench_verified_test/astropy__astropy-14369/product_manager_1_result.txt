@@ -1,0 +1,9 @@
+I have analyzed the issue with incorrect units parsing from MRT (CDS format) files in astropy.table. The problem is that when reading CDS format files with composite units like `10+3J/m/s/kpc2` and `10-7J/s/kpc2`, the resulting units have their components in the wrong order.
+
+Root cause analysis reveals that the issue is in the CDS unit parsing logic within astropy'"'"'s units module (`/testbed/astropy/units/format/cds.py`). The grammar rules for handling division operations don'"'"'t properly preserve the intended order of components when parsing sequential divisions like `J/m/s/kpc2`.
+
+Specifically:
+- Input `10+3J/m/s/kpc2` produces `1000 J s / (kpc2 m)` instead of `1000 J / (m s kpc2)`
+- Input `10-7J/s/kpc2` produces `1e-07 J kpc2 / s` instead of `1e-07 J / (s kpc2)`
+
+The fix requires modifying the CDS format parser grammar rules to correctly handle sequential division operations while maintaining CDS standard compliance and backward compatibility.

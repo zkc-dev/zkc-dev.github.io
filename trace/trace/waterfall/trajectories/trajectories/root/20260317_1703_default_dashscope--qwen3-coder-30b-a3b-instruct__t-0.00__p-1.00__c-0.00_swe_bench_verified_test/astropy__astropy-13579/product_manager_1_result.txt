@@ -1,0 +1,18 @@
+I'"'"'ve analyzed the inconsistent behavior of `world_to_pixel` in `SlicedLowLevelWCS` and identified the root cause:
+
+**Problem**: When performing `world_to_pixel` on a sliced WCS with non-trivial PC matrices that couple world coordinates, one of the resulting pixel coordinates becomes extremely large instead of returning the expected value.
+
+**Root Cause**: In `astropy/wcs/wcsapi/wrappers/sliced_wcs.py` line 254, when a world dimension is dropped during slicing, the code hardcodes the value to `1.0` instead of computing the appropriate value based on WCS relationships.
+
+**Technical Details**: 
+- The issue occurs with 3D WCS objects that have PC matrix elements like PC1_2 = -1.0, PC2_3 = -1.0 that couple spatial and spectral dimensions
+- When slicing to a 2D WCS, the dropped spectral dimension is set to 1.0 instead of being computed properly
+- This breaks the mathematical consistency of WCS transformations involving coupled coordinates
+
+**Requirements for Fix**:
+1. Properly compute dropped world coordinate values based on WCS transformation relationships
+2. Maintain backward compatibility for WCS systems without coupling
+3. Preserve the mathematical integrity of PC matrix relationships
+4. Ensure pixel coordinate calculations remain consistent with full WCS behavior
+
+The fix should modify the `world_to_pixel_values` method to avoid hardcoding dropped world coordinates to 1.0, instead computing appropriate values that respect the WCS'"'"'s coupling relationships.

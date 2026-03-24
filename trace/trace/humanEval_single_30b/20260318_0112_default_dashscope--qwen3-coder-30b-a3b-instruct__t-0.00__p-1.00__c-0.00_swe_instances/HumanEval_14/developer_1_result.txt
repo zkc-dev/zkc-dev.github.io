@@ -1,0 +1,11 @@
+I have successfully implemented the `all_prefixes` function in `/HumanEval_14/solution.py`. The function returns all prefixes of a string from shortest to longest as required. 
+
+The implementation uses a list comprehension with string slicing: `[string[:i] for i in range(1, len(string) + 1)]`
+
+Key features:
+- Handles empty strings correctly (returns empty list)
+- Works with single characters 
+- Generates prefixes in order from shortest to longest
+- Passes all test cases including the example: `all_prefixes('"'"'abc'"'"')` returns `['"'"'a'"'"', '"'"'ab'"'"', '"'"'abc'"'"']`
+
+I created and ran comprehensive tests to verify the implementation works correctly for various edge cases.

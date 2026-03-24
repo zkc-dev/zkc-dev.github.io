@@ -1,0 +1,20 @@
+I have implemented the `longest` function in `/HumanEval_12/solution.py` according to the requirements:
+
+**Changes made:**
+- Implemented the `longest` function that takes a list of strings and returns the longest one
+- Added proper handling for empty lists (returns None)
+- Implemented logic to return the first string when multiple strings have the same maximum length
+- Used a simple iteration approach to find the longest string
+
+**Key features of the implementation:**
+1. Returns `None` when input list is empty
+2. Returns the first string in case of ties (as specified in docstring)
+3. Correctly identifies the longest string by comparing string lengths
+4. Handles edge cases like empty strings within the list
+
+**Testing:**
+- Created comprehensive tests in `/HumanEval_12/agent_tests` that verify all scenarios
+- All tests pass, confirming the implementation meets the requirements
+- Verified against the specific examples provided in the docstring
+
+The solution is minimal, correct, and handles all the specified cases properly.

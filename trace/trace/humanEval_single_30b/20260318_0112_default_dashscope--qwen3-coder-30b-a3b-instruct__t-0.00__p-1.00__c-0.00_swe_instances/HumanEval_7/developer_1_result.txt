@@ -1,0 +1,15 @@
+I have successfully implemented the `filter_by_substring` function in `/HumanEval_7/solution.py`. The function filters a list of strings to only include those that contain the given substring.
+
+**Changes made:**
+- Implemented the missing function body in `solution.py` 
+- Used a list comprehension with the `in` operator to efficiently filter strings
+- The implementation handles all edge cases correctly including empty lists, no matches, and empty substrings
+
+**Key features of the implementation:**
+- Returns empty list when input is empty
+- Filters strings that contain the specified substring  
+- Works with all test cases from the docstring examples
+- Handles edge cases properly (empty substring matches all, no matches returns empty list)
+- Uses efficient list comprehension approach
+
+The solution has been verified to work correctly with the provided test cases and additional edge cases.

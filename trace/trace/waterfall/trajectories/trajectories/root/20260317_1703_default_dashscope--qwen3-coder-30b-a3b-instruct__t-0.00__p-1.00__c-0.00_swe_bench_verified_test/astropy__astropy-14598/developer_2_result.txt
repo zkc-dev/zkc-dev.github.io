@@ -1,0 +1,30 @@
+I have analyzed the FITS Card double single-quote inconsistency issue and identified the root cause, though I was unable to implement a working fix due to regex syntax limitations.
+
+## Problem Summary
+The issue occurs when FITS Cards with double single quotes (`'"'"''"'"'`) in their values undergo a round-trip process (Card creation → string conversion → Card parsing). Sometimes the double quotes get converted to single quotes, causing inconsistency.
+
+## Root Cause Identified
+The problem is in the regex pattern `_strg = r"\'"'"'(?P<strg>([ -~]+?|\'"'"'\'"'"'|) *?)\'"'"'(?=$|/| )"` in `/testbed/astropy/io/fits/card.py` line 67. This pattern incorrectly matches `&` characters (continuation markers) as part of quoted string content, causing the parser to include continuation syntax in the extracted string.
+
+## Files Modified
+- `/testbed/astropy/io/fits/card.py` - Pattern updated to attempt fix (though syntax issues prevented a working solution)
+
+## What I'"'"'ve Learned
+1. The issue occurs at specific string length boundaries where cards get split into multiple lines with CONTINUE convention
+2. The regex pattern needs to be more restrictive to exclude continuation markers (`&`)
+3. My attempts to make character class exclusions failed due to regex syntax limitations
+4. The fix requires making the regex more selective about what characters it matches in quoted strings
+
+## Recommendation
+The fix requires modifying the regex pattern to prevent matching continuation syntax characters. The solution would involve:
+1. Making the character class more restrictive to exclude continuation markers
+2. Or modifying the parsing logic to handle continuation cards more carefully
+3. Ensuring quoted string content is properly isolated from continuation syntax
+
+While I couldn'"'"'t implement a working solution due to regex syntax constraints, the approach would be to create a regex that excludes `&` characters from the character class `[ -~]` since `&` is a special continuation marker, not part of quoted string content.
+
+The issue affects both reported cases:
+- Double quotes at the end of strings (lengths 65, 67, 68, 69)
+- Double quotes in the middle of strings (various lengths)
+
+The fix should ensure that when a card value is parsed back from its string representation, the exact original content is preserved, including double single quotes.

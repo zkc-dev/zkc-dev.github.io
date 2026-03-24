@@ -1,0 +1,28 @@
+I have successfully fixed the misleading exception issue in TimeSeries when required column checks fail.
+
+## Problem
+The issue was in the `_check_required_columns` method in `/testbed/astropy/timeseries/core.py`. When a required column was removed from a TimeSeries, it showed a confusing error message: "TimeSeries object is invalid - expected '"'"'time'"'"' as the first columns but found '"'"'time'"'"'" which makes no sense since '"'"'time'"'"' IS the first column.
+
+## Root Cause
+The original code always assumed that when `self.colnames[:len(required_columns)] != required_columns`, it meant the first column was wrong, even when the real issue was that required columns were missing.
+
+## Solution
+Enhanced the `_check_required_columns` method (lines 77-85) to distinguish between two error conditions:
+
+1. **Missing required columns**: When `len(self.colnames) < len(required_columns)` - now shows clear message like "missing required column(s): flux"
+2. **Wrong first column**: When `len(self.colnames) >= len(required_columns)` but columns don'"'"'t match - preserves original error message for backward compatibility
+
+## Changes Made
+**File**: `/testbed/astropy/timeseries/core.py`
+- Modified lines 77-85 in the `_check_required_columns` method
+- Added logic to detect missing required columns vs wrong first column
+- Maintained backward compatibility for existing error cases
+
+## Verification
+- ✅ Reproduced original misleading error
+- ✅ Verified fix provides clear error: "TimeSeries object is invalid - missing required column(s): flux"
+- ✅ Confirmed backward compatibility - wrong first column cases still show appropriate messages
+- ✅ Tested normal operations (add/remove columns) still work correctly
+- ✅ Existing tests pass for core functionality
+
+The fix is minimal, focused, and addresses exactly the issue described while maintaining all existing functionality.

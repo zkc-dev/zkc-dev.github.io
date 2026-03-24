@@ -1,0 +1,18 @@
+I have successfully identified and fixed the NDDataRef mask propagation issue in v5.3. 
+
+**Problem**: The `_arithmetic_mask` method in `astropy/nddata/mixins/ndarithmetic.py` had faulty conditional logic that caused a TypeError when performing arithmetic operations between NDDataRef objects where one operand had a mask and the other didn'"'"'t.
+
+**Root Cause**: Line 520 checked `elif self.mask is None and operand is not None:` instead of checking if the operand actually has a mask. This caused the method to skip the correct branch when only the second operand had a mask, leading to attempts to perform bitwise OR operations with None values.
+
+**Fix Applied**: Modified the `_arithmetic_mask` method to properly handle all cases:
+1. Fixed the condition to check if `operand.mask is not None` instead of `self.mask is None`
+2. Added explicit handling for when the first operand has a mask but the second doesn'"'"'t
+3. Ensured proper mask propagation in all scenarios
+
+**Verification**: 
+- The exact reproduction case from the issue now works correctly
+- All existing tests continue to pass
+- Comprehensive testing shows all arithmetic operations work properly
+- Backward compatibility is maintained
+
+The fix is minimal, targeted, and resolves the TypeError while preserving the intended behavior described in the documentation.

@@ -1,0 +1,31 @@
+Based on my analysis of the pull request description and the astropy codebase, I'"'"'ve identified the key requirements for implementing a direct approach to ITRS to Observed transformations that stays within the ITRS framework.
+
+## Problem Summary
+The issue addresses recurring inaccuracies in ITRS to AltAz transforms for satellite and object observations. The root cause is that current ITRS->ITRS transformations refer coordinates to the Solar System Barycenter (SSB) rather than the rotating ITRF, leading to significant errors for nearby objects.
+
+## Key Requirements Identified
+
+### Core Functional Requirements
+1. **Direct ITRS to Observed Transformations**: Implement transformations staying entirely within ITRS coordinate system
+2. **Bidirectional Support**: Enable ITRS ↔ AltAz and ITRS ↔ HADec transformations
+3. **Time Invariance**: Treat ITRS positions as time-invariant during transformations
+4. **Proper Coordinate Handling**: 
+   - ITRS→Observed: Form topocentric ITRS by subtracting observer'"'"'s ITRS position
+   - Observed→ITRS: Form geocentric ITRS by adding observer'"'"'s ITRS position back
+
+### Technical Implementation Requirements
+1. **Matrix Operations**: Use rotation_matrix and matrix_transpose utilities
+2. **Rotation Matrix Construction**:
+   - AltAz: Left-handed rotation using longitude and latitude
+   - HADec: Left-handed rotation using longitude only
+3. **Frame Registration**: Register with frame_transform_graph using FunctionTransformWithFiniteDifference
+4. **Geodetic Handling**: Extract coordinates from observer location using WGS84 datum
+5. **Time Management**: Adopt output frame'"'"'s obstime for ITRS transformations
+
+### Design Considerations
+- The approach treats ITRS coordinates as time-invariant to avoid errors from SSB referencing
+- Uses topocentric coordinate system concepts for more accurate local observations
+- Maintains compatibility with existing astropy coordinate framework
+- Provides intuitive interface that eliminates need for complex workarounds
+
+This solution directly addresses user pain points by providing accurate, straightforward transformations without requiring the complex explanations and workarounds currently needed.

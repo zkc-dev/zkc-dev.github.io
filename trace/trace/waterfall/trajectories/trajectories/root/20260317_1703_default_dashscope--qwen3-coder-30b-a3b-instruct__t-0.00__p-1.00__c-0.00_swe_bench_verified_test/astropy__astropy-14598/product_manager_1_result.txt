@@ -1,0 +1,23 @@
+I'"'"'ve analyzed the inconsistency in double single-quote management in FITS Card as described in the issue. 
+
+## Problem Understanding
+The issue occurs when FITS Cards with double single quotes (`'"'"''"'"'`) in their values undergo a round-trip process (Card creation → string conversion → Card parsing). Sometimes the double quotes get converted to single quotes, causing inconsistency.
+
+## Root Cause Analysis
+The problem stems from the interaction between:
+1. Formatting logic in `_format_value()` that escapes single quotes by doubling them (`'"'"'` → `'"'"''"'"'`)
+2. Parsing logic in `_parse_value()` that unescapes double quotes back to single quotes (`'"'"''"'"'` → `'"'"'`)
+3. The regex pattern used for parsing quoted strings that doesn'"'"'t handle all edge cases properly
+
+## Key Findings
+- The inconsistency manifests at specific string length boundaries
+- Both cases (double quotes at end vs middle of string) are affected
+- The issue is in the parsing/unparsing logic rather than the basic escaping mechanism
+
+## Requirements for Fix
+1. Ensure consistent quote handling throughout the round-trip process
+2. Update the parsing logic to correctly handle all cases of double quotes
+3. Maintain backward compatibility
+4. Validate with comprehensive test cases covering various scenarios
+
+The fix needs to address the specific regex pattern matching and quote handling logic in the card parsing/formatting methods to ensure that double single quotes are preserved exactly as they were originally entered.

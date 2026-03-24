@@ -1,0 +1,21 @@
+I'"'"'ve analyzed the issue with subclassed SkyCoord giving misleading attribute access messages. 
+
+**Problem Understanding:**
+When a subclass of SkyCoord defines a property that accesses a non-existent attribute, the error message incorrectly states that the property itself doesn'"'"'t exist rather than the actual missing attribute.
+
+**Root Cause:**
+The issue occurs because:
+1. When accessing `c.prop`, Python recognizes `prop` as a property
+2. The property'"'"'s getter executes `return self.random_attr` 
+3. This triggers `SkyCoord.__getattr__` because `random_attr` doesn'"'"'t exist
+4. The `__getattr__` method raises an AttributeError with the attribute name it was asked to find (`random_attr`)
+5. But the error gets caught and re-raised in a way that confuses the message
+
+**Requirements Analysis:**
+The fix needs to:
+1. Preserve existing functionality for legitimate SkyCoord attribute access
+2. Improve error messaging for subclass properties accessing non-existent attributes
+3. Maintain backward compatibility
+4. Handle edge cases properly
+
+I'"'"'ve created a comprehensive requirements analysis document outlining the problem, root cause, and requirements for fixing this issue. The solution would involve modifying the `SkyCoord.__getattr__` method to better distinguish between different types of attribute access patterns while maintaining all existing functionality.

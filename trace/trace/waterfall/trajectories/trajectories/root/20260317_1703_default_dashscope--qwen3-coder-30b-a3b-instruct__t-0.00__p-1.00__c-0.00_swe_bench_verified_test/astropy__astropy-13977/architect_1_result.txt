@@ -1,0 +1,29 @@
+I have successfully analyzed and implemented a fix for the issue where `Quantity.__array_ufunc__()` was raising `ValueError` instead of returning `NotImplemented` for incompatible inputs.
+
+## Problem Analysis
+The issue occurred when performing ufunc operations where a `Quantity` was on the left side with different units and a duck-type object was on the right. The `Quantity.__array_ufunc__()` method would call converters that eventually raised a `ValueError` in `_condition_arg()` instead of returning `NotImplemented` as per NumPy'"'"'s documented behavior.
+
+## Solution Implemented
+Modified the `__array_ufunc__` method in `/testbed/astropy/units/quantity.py` (lines 666-678) to:
+1. Wrap converter calls in try-except blocks
+2. Catch `ValueError` exceptions during converter processing
+3. Return `NotImplemented` when such errors occur, allowing NumPy to fall back to other implementations
+
+## Key Changes
+```python
+# Added try-except around converter calls to catch ValueError
+try:
+    arrays.append(converter(input_))
+except ValueError:
+    # If converter fails due to incompatible input, 
+    # return NotImplemented to allow fallback to other implementations
+    return NotImplemented
+```
+
+## Verification
+- Reproduced the original issue and confirmed the fix resolves it
+- All existing ufunc tests (205 tests) continue to pass
+- Basic quantity operations remain unaffected
+- The specific case mentioned in the PR now works correctly: `(1 * u.m) + DuckArray(1 * u.mm)` 
+
+The fix aligns with NumPy'"'"'s documented behavior and enables proper duck typing support while maintaining full backward compatibility.

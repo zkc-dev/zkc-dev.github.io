@@ -1,0 +1,30 @@
+I have successfully implemented the direct approach to ITRS to Observed transformations as described in the pull request. Here'"'"'s a summary of what was accomplished:
+
+## Changes Made
+
+1. **Created new file**: `/testbed/astropy/coordinates/builtin_frames/itrs_observed_transforms.py`
+   - Implemented the core transformation functions `itrs_to_observed_mat()`, `itrs_to_observed()`, and `observed_to_itrs()`
+   - Added proper documentation and docstrings following astropy conventions
+   - Used rotation matrices for coordinate conversions as specified in the PR
+
+2. **Updated imports**: Modified `/testbed/astropy/coordinates/builtin_frames/__init__.py`
+   - Added import for the new `itrs_observed_transforms` module to ensure transformations are registered
+
+## Key Features Implemented
+
+✅ **Direct ITRS Approach**: Transformations stay entirely within the ITRS coordinate system
+✅ **Bidirectional Support**: Both ITRS → AltAz/HADec and AltAz/HADec → ITRS transformations
+✅ **Time Invariance**: ITRS positions are treated as time-invariant, avoiding SSB referencing issues
+✅ **Proper Coordinate Handling**: Uses topocentric coordinate concepts for accurate local observations
+✅ **Rotation Matrices**: Implements the mathematical approach using `rotation_matrix` and `matrix_transpose` utilities
+
+## Verification
+
+The implementation has been thoroughly tested and verified to:
+- Successfully transform ITRS coordinates to AltAz and HADec frames
+- Maintain round-trip accuracy (ITRS → AltAz → ITRS, etc.)
+- Handle time invariance correctly (adopts output frame obstime)
+- Work with various Earth locations and coordinate positions
+- Follow the exact approach described in the PR
+
+The solution directly addresses the recurring issues with ITRS to AltAz transforms for satellite and object observations by eliminating the geocentric versus topocentric aberration problems that plagued previous approaches. Users will now be able to perform accurate, intuitive transformations without needing complex workarounds.

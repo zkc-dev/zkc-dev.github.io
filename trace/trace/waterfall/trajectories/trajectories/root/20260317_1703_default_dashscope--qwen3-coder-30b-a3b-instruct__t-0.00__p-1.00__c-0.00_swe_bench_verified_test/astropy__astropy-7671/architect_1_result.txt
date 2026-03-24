@@ -1,0 +1,23 @@
+I have successfully identified and fixed the minversion failures issue in the astropy repository. 
+
+**Problem**: The `minversion` function in `astropy/utils/introspection.py` was failing with a TypeError when comparing version strings with dev suffixes (like '"'"'1.14dev'"'"') using `distutils.version.LooseVersion`. This was caused by a bug in LooseVersion when comparing integer and string components.
+
+**Root Cause**: PR #7647 removed a workaround that handled this specific bug in LooseVersion, leaving the code vulnerable to the TypeError.
+
+**Solution**: Modified the `minversion` function to:
+1. Use `pkg_resources.parse_version` when available (which handles dev versions correctly)
+2. Fall back gracefully to `LooseVersion` with try/except error handling
+3. Maintain full backward compatibility
+
+**Changes Made**:
+- Updated imports in `/testbed/astropy/utils/introspection.py` to prefer `pkg_resources.parse_version`
+- Modified the version comparison logic to wrap comparisons in try/except blocks
+- Added graceful fallback to `LooseVersion` if needed
+
+**Verification**:
+- ✅ The original failing case now works: `minversion(mock_module, '"'"'1.14dev'"'"')` returns `True` instead of raising TypeError
+- ✅ All existing tests continue to pass
+- ✅ Backward compatibility maintained for all other use cases
+- ✅ Comprehensive testing confirms the fix handles the reported issue correctly
+
+The fix is minimal, focused, and addresses exactly the issue described while preserving all existing functionality.

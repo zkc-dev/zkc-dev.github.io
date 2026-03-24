@@ -1,0 +1,29 @@
+I have successfully fixed the issue with misleading attribute access messages in SkyCoord subclassing.
+
+## Problem
+When a subclass of `SkyCoord` defined a property that tried to access a non-existent attribute, the error message was misleading. Instead of showing that the actual missing attribute didn'"'"'t exist, it said the property itself didn'"'"'t exist.
+
+## Root Cause
+The issue was in the `__getattr__` method of the `SkyCoord` class. When a property in a subclass failed to access a non-existent attribute, the error handling didn'"'"'t distinguish between truly missing attributes and properties that exist but fail during access.
+
+## Solution
+I modified the `__getattr__` method in `/testbed/astropy/coordinates/sky_coordinate.py` (lines 869-909) to:
+
+1. Detect when the requested attribute is a property using `isinstance(getattr(self.__class__, attr), property)`
+2. Provide a more helpful error message for properties that fail to access other attributes
+3. Preserve all existing functionality for normal cases
+
+## Key Changes
+- **File Modified**: `/testbed/astropy/coordinates/sky_coordinate.py`
+- **Method**: `__getattr__` (lines 869-909)
+- **Logic Added**: Detection of properties and improved error messaging
+
+## Verification
+The fix has been thoroughly tested:
+- ✅ Original issue resolved - helpful error messages now provided
+- ✅ Normal SkyCoord functionality preserved
+- ✅ Frame transformations work correctly
+- ✅ Properties in subclasses work as expected
+- ✅ Non-existent attributes still give appropriate errors
+
+The error message now clearly indicates that a property failed to access another attribute, making debugging much easier for developers who subclass SkyCoord.

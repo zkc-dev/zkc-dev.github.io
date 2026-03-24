@@ -1,0 +1,18 @@
+I have successfully fixed the issue where unit equality comparison with None raises TypeError for UnrecognizedUnit.
+
+**Problem:** The `UnrecognizedUnit.__eq__` method in `/testbed/astropy/units/core.py` was attempting to convert `None` to a Unit, which caused a TypeError since the Unit constructor explicitly rejects None values.
+
+**Solution:** Modified the `UnrecognizedUnit.__eq__` method to check for `None` explicitly and return `False` immediately, which is consistent with Python'"'"'s equality semantics where any object compared to `None` returns `False`.
+
+**Changes Made:**
+- Updated lines 1712-1716 in `/testbed/astropy/units/core.py` to add a None check before Unit conversion
+- The fix is minimal and preserves all existing functionality
+
+**Verification:**
+- Created and ran tests that reproduce the original issue
+- Confirmed the fix resolves the TypeError
+- Verified that comparisons with None now return False as expected
+- Tested that existing functionality remains intact
+- Ran comprehensive tests to ensure no regressions
+
+The fix ensures that `x == None` for an UnrecognizedUnit `x` now returns `False` instead of raising a TypeError, making it consistent with Python'"'"'s standard behavior.

@@ -1,0 +1,18 @@
+Based on my analysis of the issue and code, I'"'"'ve identified the requirements for addressing the auto-transformation of structured columns into NdarrayMixin:
+
+1. **Problem**: Structured numpy arrays are automatically converted to NdarrayMixin objects without user awareness, which was originally done for serialization reasons but is no longer necessary.
+
+2. **Root Cause**: Lines 1242-1247 in `/testbed/astropy/table/table.py` contain the problematic code that automatically transforms structured ndarrays into NdarrayMixin instances.
+
+3. **Requirements**:
+   - Add a FutureWarning when this automatic transformation occurs, informing users to wrap data in Column objects
+   - In version 5.2, remove this automatic transformation logic entirely
+   - Maintain backward compatibility during transition period
+   - Provide clear guidance on how to adapt existing code
+
+4. **Implementation Approach**:
+   - Modify the `_convert_data_to_col` method to issue FutureWarning before transformation
+   - Eventually remove the transformation logic in version 5.2
+   - Ensure tests verify warning issuance and proper behavior
+
+This change will improve user experience by making the behavior explicit rather than automatic, while providing a clear migration path.

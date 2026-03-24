@@ -1,0 +1,11 @@
+I'"'"'ve analyzed the FITS Card double single-quote management inconsistency issue. The problem occurs when long strings in FITS cards require CONTINUE syntax, causing the regex pattern to match too much content including the `&` character and subsequent CONTINUE parts.
+
+Key findings:
+1. The issue manifests at specific string lengths (65, 67, 68, etc.) where cards get split into multiple lines with CONTINUE syntax
+2. The problem is in the `_strg` regex pattern in `/testbed/astropy/io/fits/card.py` line 67
+3. The regex `r"\'"'"'(?P<strg>([ -~]+?|\'"'"'\'"'"'|) *?)\'"'"'(?=$|/| )"` is not correctly stopping at the first closing quote when there are multiple quoted strings or CONTINUE syntax
+4. This causes parsing to match `'"'"'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"'"''"'"'&'"'"'CONTINUE  '"'"''"'"''"'"'` instead of just `'"'"'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'"'"''"'"'`
+
+I attempted several regex modifications but they either broke existing functionality or didn'"'"'t solve the core issue. The fix requires a more precise regex pattern that properly anchors to the first closing quote, but I was unable to implement a working solution without breaking the code.
+
+The issue demonstrates a subtle bug in the FITS card parsing logic when handling long strings with CONTINUE syntax, where the quoted string parsing doesn'"'"'t correctly distinguish between the end of the quoted string and the beginning of CONTINUE card syntax.

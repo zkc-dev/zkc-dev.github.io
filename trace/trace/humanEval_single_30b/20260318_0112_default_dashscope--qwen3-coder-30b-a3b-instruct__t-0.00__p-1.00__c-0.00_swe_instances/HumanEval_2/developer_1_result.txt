@@ -1,0 +1,20 @@
+I have successfully implemented the `truncate_number` function in `/HumanEval_2/solution.py`. 
+
+**Changes Made:**
+- Modified `/HumanEval_2/solution.py` to implement the function that returns the decimal part of a positive floating-point number
+- Used `math.modf()` to decompose the number into fractional and integer parts
+- Returned only the fractional part as required
+
+**Implementation Details:**
+The function takes a positive floating-point number and returns its decimal (fractional) part:
+- For input 3.5, it returns 0.5 
+- For input 5.0, it returns 0.0
+- For input 2.7, it returns 0.7000000000000002 (with normal floating-point precision)
+
+**Testing:**
+- Created comprehensive tests in `/HumanEval_2/agent_tests/test_truncate_number.py`
+- Verified the implementation passes all test cases including the provided example
+- Used `math.isclose()` for appropriate floating-point comparisons
+- All tests pass successfully with pytest
+
+The solution is minimal, correct, and handles the core requirement of extracting the decimal part of a positive floating-point number.

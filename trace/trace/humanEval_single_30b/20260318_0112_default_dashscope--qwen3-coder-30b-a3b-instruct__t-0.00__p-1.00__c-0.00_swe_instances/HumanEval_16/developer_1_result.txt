@@ -1,0 +1,13 @@
+I have successfully implemented the `count_distinct_characters` function in `/HumanEval_16/solution.py`. 
+
+The solution:
+1. Takes a string input and converts it to lowercase to ensure case-insensitive comparison
+2. Uses Python'"'"'s `set()` function to extract only distinct characters
+3. Returns the length of that set, which represents the count of distinct characters
+
+The implementation passes all test cases:
+- `count_distinct_characters('"'"'xyzXYZ'"'"')` returns 3 (x, y, z)
+- `count_distinct_characters('"'"'Jerry'"'"')` returns 4 (j, e, r, y)
+- Edge cases like empty strings and repeated characters work correctly
+
+The solution is minimal, efficient, and meets all requirements specified in the problem description.

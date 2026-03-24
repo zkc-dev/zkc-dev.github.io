@@ -1,0 +1,21 @@
+I have successfully fixed the issue where ASCII table output to HTML does not support the supplied "formats" parameter.
+
+## Problem
+The HTML writer in astropy was not applying column formatting specified through the `formats` parameter, unlike other formats such as CSV and RST.
+
+## Root Cause
+In `/testbed/astropy/io/ascii/html.py`, the `HTML.write()` method was not calling `_set_col_formats()` to apply the formatting specifications to columns before processing them for output.
+
+## Solution
+I made two minimal changes to `/testbed/astropy/io/ascii/html.py`:
+
+1. Added `self.data.cols = cols` to ensure the data object has access to the columns
+2. Added `self.data._set_col_formats()` to properly apply the format specifications
+
+## Verification
+- The original issue example now works correctly, showing formatted values like "1.24e-24" instead of full precision
+- Comprehensive testing with multiple columns, different data types, and edge cases all pass
+- All existing tests continue to pass (158/158 tests in the write module)
+- Backward compatibility is maintained - when no formats are specified, behavior remains unchanged
+
+The fix ensures HTML table output now respects the `formats` argument just like other ASCII table formats do.

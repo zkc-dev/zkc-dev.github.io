@@ -1,0 +1,24 @@
+I have successfully fixed the IndexError in the `identify_format` function in astropy'"'"'s IO registry system.
+
+**Problem:** The issue occurred in `/testbed/astropy/io/fits/connect.py` in the `is_fits` function. A recent commit (2a0c5c6f5b) simplified code by removing redundant conditional logic but introduced a bug where `args[0]` was accessed without checking if the `args` tuple was empty. When `identify_format` was called with just a filename and no additional arguments, `args` would be empty, causing an IndexError.
+
+**Solution:** Modified the `is_fits` function to properly check if `args` contains elements before accessing `args[0]`:
+
+```python
+# Before (line 72):
+return isinstance(args[0], (HDUList, TableHDU, BinTableHDU, GroupsHDU))
+
+# After (lines 72-74):
+if args:
+    return isinstance(args[0], (HDUList, TableHDU, BinTableHDU, GroupsHDU))
+return False
+```
+
+**Verification:**
+- ✅ Successfully reproduced the original IndexError
+- ✅ Confirmed the fix resolves the IndexError 
+- ✅ All existing FITS connect tests pass (141 passed)
+- ✅ All registry identify_format tests pass (11 passed)
+- ✅ Basic functionality preserved - file type detection works correctly
+
+The fix is minimal, targeted, and maintains backward compatibility while resolving the specific IndexError that was breaking downstream packages like HENDRICS.

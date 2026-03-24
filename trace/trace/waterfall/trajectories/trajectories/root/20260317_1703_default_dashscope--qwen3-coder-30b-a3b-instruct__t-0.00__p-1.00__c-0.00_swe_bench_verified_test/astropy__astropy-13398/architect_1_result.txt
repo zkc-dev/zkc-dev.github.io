@@ -1,0 +1,15 @@
+I'"'"'ve analyzed the pull request for implementing direct ITRS to Observed transformations that stays within the ITRS framework. The solution addresses recurring accuracy issues with ITRS to AltAz transforms for satellite and object observations by:
+
+1. Creating a new approach that treats ITRS positions as time-invariant
+2. Implementing bidirectional transformations between ITRS, AltAz, and HADec frames
+3. Using rotation matrices to handle coordinate conversions properly
+4. Avoiding the SSB referencing issues that cause large errors for nearby objects
+
+Key aspects of the implementation:
+- Uses FunctionTransformWithFiniteDifference for accurate transformations
+- Leverages existing astropy utilities (rotation_matrix, matrix_transpose)
+- Registers transforms with frame_transform_graph
+- Handles geodetic coordinates using WGS84 datum
+- Maintains compatibility with existing astropy coordinate framework
+
+The approach directly solves the user pain points by eliminating the need for complex workarounds and providing more intuitive, accurate transformations for observing applications.

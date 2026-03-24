@@ -1,0 +1,33 @@
+I have successfully identified and fixed the issue with `io.fits.FITSDiff` incorrectly reporting differences between identical files when dealing with variable-length arrays (VLAs).
+
+## Problem Analysis
+The issue was in the `TableDataDiff._diff()` method in `/testbed/astropy/io/fits/diff.py` at line 1463. The code had three branches for handling data comparison:
+1. Floating-point data → use `where_not_allclose` 
+2. Columns with "P" in format → use list comprehension approach
+3. Everything else → use `np.where(arra != arrb)` 
+
+The third branch failed for variable-length arrays because:
+- Variable-length arrays have object dtype, not "P" format
+- When comparing `arra != arrb` for variable-length arrays, it attempts to compare arrays of different lengths
+- This resulted in a `ValueError: The truth value of an array with more than one element is ambiguous`
+
+## Solution Implemented
+I modified the condition on line 1452 from:
+```python
+elif "P" in col.format:
+```
+
+to:
+```python
+elif "P" in col.format or arra.dtype == np.dtype(object):
+```
+
+This change ensures that any data with object dtype (which includes variable-length arrays) is handled using the list comprehension approach that properly handles element-wise comparisons.
+
+## Verification
+1. **Original Issue Fixed**: The exact reproduction case from the issue description now works correctly
+2. **Backward Compatibility**: All existing tests pass (48/48 tests in test_diff.py and 21/21 tests in test_fitsdiff.py)
+3. **Comprehensive Testing**: Created additional tests covering multiple VLA scenarios to ensure robustness
+4. **Edge Cases Covered**: Both identical and different files are handled correctly
+
+The fix is minimal, targeted, and maintains full backward compatibility while resolving the specific issue with variable-length arrays in FITS table data comparison.

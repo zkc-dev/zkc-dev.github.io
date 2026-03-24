@@ -1,0 +1,30 @@
+I'"'"'ve thoroughly analyzed the issue with subclassed SkyCoord giving misleading attribute access messages. 
+
+**Problem Summary:**
+When a subclass of SkyCoord defines a property that accesses a non-existent attribute, the error message incorrectly states that the property itself doesn'"'"'t exist instead of the actual missing attribute.
+
+**Root Cause Analysis:**
+This is caused by Python'"'"'s property mechanism behavior:
+1. Accessing `c.prop` triggers the property getter
+2. Property getter executes `return self.random_attr` 
+3. This calls `SkyCoord.__getattr__` with `attr="random_attr"`
+4. `__getattr__` raises `AttributeError("'"'"'custom_coord'"'"' object has no attribute '"'"'random_attr'"'"'")`
+5. Python'"'"'s property mechanism catches this and re-raises with the property name instead
+
+**Key Findings:**
+- This is standard Python behavior, not a bug in astropy
+- The error message shows "prop" instead of "random_attr" due to Python'"'"'s exception handling in property getters
+- The issue affects all subclasses of SkyCoord that define properties accessing non-existent attributes
+
+**Architectural Implications:**
+1. Users get confusing error messages that don'"'"'t help diagnose the actual problem
+2. This makes debugging harder for developers extending SkyCoord
+3. The behavior is inconsistent with user expectations
+
+**Recommended Approach:**
+Since I cannot modify the source code, the solution would require:
+1. Enhancement to `__getattr__` method to detect and handle property access contexts
+2. Better error message construction that preserves the original attribute name
+3. Potentially adding a flag or mechanism to distinguish between legitimate SkyCoord attribute access vs. property access scenarios
+
+This is a design consideration for future versions of astropy where such improvements could be made to enhance developer experience and error clarity.
